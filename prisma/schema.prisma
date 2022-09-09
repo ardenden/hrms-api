@@ -9,3 +9,24 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Applicant {
+  id            Int      @id @default(autoincrement())
+  firstName     String   @map("first_name")
+  middleName    String?  @map("middle_name")
+  lastName      String   @map("last_name")
+  nameExtension String?  @map("name_extension")
+  telephoneNo   String?  @map("telephone_no")
+  mobileNo      String?  @map("mobile_no")
+  email         String?  @map("email")
+  birthDate     DateTime @map("birth_date") @db.Date
+  birthPlace    String   @map("birth_place")
+  citizenship   String   @map("citizenship")
+  sex           String   @map("sex")
+  religion      String?  @map("religion")
+  address       String   @map("address")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("applicants")
+}
