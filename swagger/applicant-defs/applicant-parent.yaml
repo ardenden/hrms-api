@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Applicant Parent
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantParent:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - relationship
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        firstName:
+          type: string
+          example: Thelma
+        middleName:
+          type: string
+          example: null
+        lastName:
+          type: string
+          example: Griffin
+        nameExtension:
+          type: string
+          example: null
+        relationship:
+          type: string
+          example: Mother
+        occupation:
+          type: string
+          example: Deceased
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/parents:
+    get:
+      tags:
+        - Applicant Parents
+      summary: Fetch all applicant's parents
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantParent'
+    post:
+      tags:
+        - Applicant Parents
+      summary: Add applicant's parent
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantParent'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantParent'
+  /applicants/{applicantId}/parents/{parentId}:
+    get:
+      tags:
+        - Applicant Parents
+      summary: Find applicant's parent by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: parentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantParent'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Parents
+      summary: Update applicant's parent by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: parentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantParent'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantParent'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Parents
+      summary: Delete applicant's parent by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: parentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
