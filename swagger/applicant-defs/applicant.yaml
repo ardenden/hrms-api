@@ -1,0 +1,164 @@
+openapi: 3.0.3
+info:
+  title: Applicant
+  version: 1.0.0
+components:
+  schemas:
+    Applicant:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - birthDate
+        - birthPlace
+        - citizenship
+        - sex
+        - address
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        firstName:
+          type: string
+          example: Justin
+        middleName:
+          type: string
+          example: Peter
+        lastName:
+          type: string
+          example: Griffin
+        nameExtension:
+          type: string
+          example: null
+        telephoneNo:
+          type: string
+          example: 123456789
+        mobileNo:
+          type: string
+          example: 09876543210
+        email:
+          type: string
+          example: null
+        birthDate:
+          type: string
+          format: date-time
+          example: 1993-02-05T00:00:00.000Z
+        birthPlace:
+          type: string
+          example: Mexico
+        citizenship:
+          type: string
+          example: American
+        sex:
+          type: string
+          example: Male
+        religion:
+          type: string
+          example: null
+        address:
+          type: string
+          example: 31 Spooner Street, Quahog, Rhode Island
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants:
+    get:
+      tags:
+        - Applicants
+      summary: Fetch all applicants
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Applicant'
+    post:
+      tags:
+        - Applicants
+      summary: Add new applicant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Applicant'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Applicant'
+  /applicants/{applicantId}:
+    get:
+      tags:
+        - Applicants
+      summary: Find applicant by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Applicant'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicants
+      summary: Update applicant by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Applicant'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Applicant'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicants
+      summary: Delete applicant by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
