@@ -70,6 +70,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ApplicantChild'
+        404:
+          description: Not found
     post:
       tags:
         - Applicant Children
@@ -93,6 +95,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicantChild'
+        404:
+          description: Not found
   /applicants/{applicantId}/children/{childId}:
     get:
       tags:

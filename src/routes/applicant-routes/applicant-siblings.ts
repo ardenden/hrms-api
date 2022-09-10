@@ -6,6 +6,17 @@ const prisma = new PrismaClient()
 
 // GET: Fetch all applicant's siblings
 router.get('/', async (req: Request, res: Response) => {
+  const applicant = await prisma.applicant.findUnique({
+    where: {
+      id: Number(req.params.applicantId)
+    }
+  })
+
+  if (!applicant) {
+    res.sendStatus(404)
+    return
+  }
+
   const applicantSiblings = await prisma.applicantSibling.findMany({
     where: {
       applicantId: Number(req.params.applicantId)
