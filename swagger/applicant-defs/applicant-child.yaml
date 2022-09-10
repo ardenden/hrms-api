@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Applicant Child
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantChild:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - relationship
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        firstName:
+          type: string
+          example: Christopher Cross
+        middleName:
+          type: string
+          example: null
+        lastName:
+          type: string
+          example: Griffin
+        nameExtension:
+          type: string
+          example: null
+        relationship:
+          type: string
+          example: Son
+        occupation:
+          type: string
+          example: Student
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/children:
+    get:
+      tags:
+        - Applicant Children
+      summary: Fetch all applicant's children
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantChild'
+    post:
+      tags:
+        - Applicant Children
+      summary: Add applicant's child
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantChild'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantChild'
+  /applicants/{applicantId}/children/{childId}:
+    get:
+      tags:
+        - Applicant Children
+      summary: Find applicant's child by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: childId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantChild'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Children
+      summary: Update applicant's child by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: childId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantChild'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantChild'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Children
+      summary: Delete applicant's child by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: childId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
