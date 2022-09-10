@@ -39,6 +39,17 @@ router.post('/', async (req: Request, res: Response) => {
     return
   }
 
+  const applicantParentCount = await prisma.applicantParent.count({
+    where: {
+      applicantId: applicant.id
+    }
+  })
+
+  if (applicantParentCount >= 2) {
+    res.sendStatus(422)
+    return
+  }
+
   const createApplicantParent = await prisma.applicantParent.create({
     data: {
       ...<Prisma.ApplicantParentUncheckedCreateInput>req.body,

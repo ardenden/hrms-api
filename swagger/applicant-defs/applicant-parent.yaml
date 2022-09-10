@@ -97,6 +97,8 @@ paths:
                 $ref: '#/components/schemas/ApplicantParent'
         404:
           description: Not found
+        422:
+          description: Not found
   /applicants/{applicantId}/parents/{parentId}:
     get:
       tags:
