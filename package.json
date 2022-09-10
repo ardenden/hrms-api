@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --detectOpenHandles",
+    "test": "jest --verbose",
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc --project ./"
   },
