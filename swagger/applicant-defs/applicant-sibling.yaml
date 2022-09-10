@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Applicant Sibling
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantSibling:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - relationship
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        firstName:
+          type: string
+          example: Karen
+        middleName:
+          type: string
+          example: null
+        lastName:
+          type: string
+          example: Griffin
+        nameExtension:
+          type: string
+          example: null
+        relationship:
+          type: string
+          example: Sister
+        occupation:
+          type: string
+          example: Pro wrestler
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/siblings:
+    get:
+      tags:
+        - Applicant Siblings
+      summary: Fetch all applicant's siblings
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantSibling'
+    post:
+      tags:
+        - Applicant Siblings
+      summary: Add applicant's sibling
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantSibling'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSibling'
+  /applicants/{applicantId}/siblings/{siblingId}:
+    get:
+      tags:
+        - Applicant Siblings
+      summary: Find applicant's sibling by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: siblingId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSibling'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Siblings
+      summary: Update applicant's sibling by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: siblingId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantSibling'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSibling'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Siblings
+      summary: Delete applicant's sibling by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: siblingId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
