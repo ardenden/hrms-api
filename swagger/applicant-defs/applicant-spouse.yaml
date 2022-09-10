@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: Applicant Spouse
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantSpouse:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - relationship
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        firstName:
+          type: string
+          example: Lois Patrice
+        middleName:
+          type: string
+          example: null
+        lastName:
+          type: string
+          example: Griffin
+        nameExtension:
+          type: string
+          example: null
+        relationship:
+          type: string
+          example: Wife
+        occupation:
+          type: string
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/spouse:
+    get:
+      tags:
+        - Applicant Spouse
+      summary: Fetch applicant's spouse
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSpouse'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Spouse
+      summary: Update or add applicant's spouse
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantSpouse'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSpouse'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Spouse
+      summary: Delete applicant's spouse
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
