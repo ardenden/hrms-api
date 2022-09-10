@@ -90,6 +90,7 @@ model ApplicantSpouse {
   middleName    String?   @map("middle_name")
   lastName      String    @map("last_name")
   nameExtension String?   @map("name_extension")
+  relationship  String    @map("relationship")
   occupation    String?   @map("occupation")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
