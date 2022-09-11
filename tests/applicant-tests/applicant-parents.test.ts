@@ -11,7 +11,7 @@ let applicantId: number
 let parentId: number
 let testApplicantParent: ApplicantParent
 
-describe('POST|GET /api/applicants', () => {
+describe('POST /api/applicants', () => {
   test('Add new applicant', async () => {
     const createApplicant: Prisma.ApplicantCreateInput = {
       firstName: 'Justin',
