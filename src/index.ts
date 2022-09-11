@@ -3,7 +3,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
 import routes from './routes'
-import swaggerDefinition from '../swagger'
+import swaggerRoutes from '../swagger/routes'
 
 const app = express()
 app.use(express.json())
@@ -15,14 +15,7 @@ app.use(routes)
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
-  const swaggerJsdoc = require('swagger-jsdoc')
-  const swaggerUi = require('swagger-ui-express')
-  const options = {
-    swaggerDefinition,
-    apis: ['swagger/**/*.yaml'],
-  }
-  const swaggerDoc = swaggerJsdoc(options)
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
+  app.use(swaggerRoutes)
 }
 
 const host = process.env.HOST || 'http://localhost'
