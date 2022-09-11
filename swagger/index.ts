@@ -1,3 +1,5 @@
+const host = process.env.HOST || 'http://localhost'
+const port = process.env.PORT || 8000
 const swaggerDefinition = {
   openapi: '3.0.3',
   info: {
@@ -7,7 +9,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'http://localhost:8000/api'
+      url: `${host}:${port}/api`
     }
   ]
 }
