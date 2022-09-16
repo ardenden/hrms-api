@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest --verbose --runInBand",
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc --project ./"
   },
