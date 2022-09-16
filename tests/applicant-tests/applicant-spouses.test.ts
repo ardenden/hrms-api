@@ -51,24 +51,6 @@ describe('POST /api/applicants', () => {
 })
 
 describe('GET|PUT|DELETE /api/applicants/{applicantId}/spouse', () => {
-  test('Applicant not found', async () => {
-    await request(app)
-      .get('/api/applicants/0/spouse')
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
-  test('Fetch applicant\'s spouse (No data)', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/spouse`)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantSpouse = <ApplicantSpouse>response.body
-        expect(applicantSpouse).toEqual({})
-      })
-  })
-
   test('Add applicant\'s spouse', async () => {
     const createApplicantSpouse: Prisma.ApplicantSpouseUncheckedCreateInput | Prisma.ApplicantSpouseUpdateInput = {
       firstName: 'Lois',
@@ -124,10 +106,10 @@ describe('GET|PUT|DELETE /api/applicants/{applicantId}/spouse', () => {
         expect(applicantSpouse.lastName).toBe('Griffin')
         expect(applicantSpouse.relationship).toBe('Wife')
         expect(applicantSpouse.occupation).toBe('N/A')
+        expect(applicantSpouse.createdAt).toBe(testApplicantSpouse.createdAt)
         expect(applicantSpouse.updatedAt).not.toBe(testApplicantSpouse.updatedAt)
-        expect(applicantSpouse.createdAt).toBeDefined()
-        expect(applicantSpouse.middleName).toBeNull()
-        expect(applicantSpouse.nameExtension).toBeNull()
+        expect(applicantSpouse.middleName).toBe(testApplicantSpouse.middleName)
+        expect(applicantSpouse.nameExtension).toBe(testApplicantSpouse.nameExtension)
       })
   })
 
@@ -139,7 +121,7 @@ describe('GET|PUT|DELETE /api/applicants/{applicantId}/spouse', () => {
       })
   })
 
-  test('Fetch applicant\'s spouse after delete (No data)', async () => {
+  test('Fetch applicant\'s spouse (No data)', async () => {
     await request(app)
       .get(`/api/applicants/${applicantId}/spouse`)
       .then((response) => {
@@ -147,5 +129,25 @@ describe('GET|PUT|DELETE /api/applicants/{applicantId}/spouse', () => {
         const applicantSpouse = <ApplicantSpouse>response.body
         expect(applicantSpouse).toEqual({})
       })
+  })
+
+  describe('DELETE /api/applicants{id}', () => {
+    test('Delete applicant by ID', async () => {
+      await request(app)
+        .delete(`/api/applicants/${applicantId}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(204)
+        })
+    })
+
+    describe('GET /api/applicants/{applicantId}/spouses', () => {
+      test('Applicant not found', async () => {
+        await request(app)
+          .get(`/api/applicants/${applicantId}/spouses`)
+          .then((response) => {
+            expect(response.statusCode).toBe(404)
+          })
+      })
+    })
   })
 })
