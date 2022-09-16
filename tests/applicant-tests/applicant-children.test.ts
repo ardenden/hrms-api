@@ -52,14 +52,6 @@ describe('POST /api/applicants', () => {
 })
 
 describe('POST|GET /api/applicants/{applicantId}/children', () => {
-  test('Applicant not found', async () => {
-    await request(app)
-      .get('/api/applicants/0/children')
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
   test('Add applicant\'s child', async () => {
     const createApplicantChild: Prisma.ApplicantChildUncheckedCreateInput = {
       applicantId: applicantId,
@@ -110,22 +102,6 @@ describe('GET|PUT|DELETE /api/applicants/{applicantId}/children/{childId}', () =
       })
   })
 
-  test('Applicant\'s child not found (Applicant not found)', async () => {
-    await request(app)
-      .get(`/api/applicants/0/children/${childId}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
-  test('Applicant\'s child not found (Child not found)', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/children/0`)
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
   test('Update applicant\'s child by ID', async () => {
     const createApplicantChild: Prisma.ApplicantChildUncheckedCreateInput = {
       applicantId: applicantId,
@@ -147,10 +123,10 @@ describe('GET|PUT|DELETE /api/applicants/{applicantId}/children/{childId}', () =
         expect(applicantChild.lastName).toBe('Griffin')
         expect(applicantChild.relationship).toBe('Daughter')
         expect(applicantChild.occupation).toBe('Student')
-        expect(applicantChild.id).toBeDefined()
-        expect(applicantChild.createdAt).toBeDefined()
-        expect(applicantChild.updatedAt).toBeDefined()
-        expect(applicantChild.nameExtension).toBeNull()
+        expect(applicantChild.id).toBe(testApplicantChild.id)
+        expect(applicantChild.createdAt).toBe(testApplicantChild.createdAt)
+        expect(applicantChild.updatedAt).not.toBe(testApplicantChild.updatedAt)
+        expect(applicantChild.nameExtension).toBe(testApplicantChild.nameExtension)
       })
   })
 
@@ -160,5 +136,43 @@ describe('GET|PUT|DELETE /api/applicants/{applicantId}/children/{childId}', () =
       .then((response) => {
         expect(response.statusCode).toBe(204)
       })
+  })
+
+  test('Applicant\'s child not found', async () => {
+    await request(app)
+      .get(`/api/applicants/${applicantId}/children/${childId}`)
+      .then((response) => {
+        expect(response.statusCode).toBe(404)
+      })
+  })
+
+  test('Fetch all applicant\'s child (empty array)', async () => {
+    await request(app)
+      .get(`/api/applicants/${applicantId}/children`)
+      .then((response) => {
+        expect(response.statusCode).toBe(200)
+        const applicantParents = <ApplicantChild[]>response.body
+        expect(applicantParents).toEqual([])
+      })
+  })
+
+  describe('DELETE /api/applicants{id}', () => {
+    test('Delete applicant by ID', async () => {
+      await request(app)
+        .delete(`/api/applicants/${applicantId}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(204)
+        })
+    })
+
+    describe('GET /api/applicants/{applicantId}/children', () => {
+      test('Applicant not found', async () => {
+        await request(app)
+          .get(`/api/applicants/${applicantId}/children`)
+          .then((response) => {
+            expect(response.statusCode).toBe(404)
+          })
+      })
+    })
   })
 })
