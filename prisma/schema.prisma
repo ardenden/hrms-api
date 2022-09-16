@@ -46,7 +46,7 @@ model ApplicantParent {
   occupation    String?   @map("occupation")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-  applicant     Applicant @relation(fields: [applicantId], references: [id])
+  applicant     Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 
   @@map("applicant_parents")
 }
@@ -62,7 +62,7 @@ model ApplicantSibling {
   occupation    String?   @map("occupation")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-  applicant     Applicant @relation(fields: [applicantId], references: [id])
+  applicant     Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 
   @@map("applicant_siblings")
 }
@@ -78,7 +78,7 @@ model ApplicantChild {
   occupation    String?   @map("occupation")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-  applicant     Applicant @relation(fields: [applicantId], references: [id])
+  applicant     Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 
   @@map("applicant_children")
 }
@@ -94,7 +94,7 @@ model ApplicantSpouse {
   occupation    String?   @map("occupation")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-  applicant     Applicant @relation(fields: [applicantId], references: [id])
+  applicant     Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 
   @@map("applicant_spouses")
 }
