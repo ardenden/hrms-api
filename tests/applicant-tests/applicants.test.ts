@@ -11,6 +11,16 @@ let id: number
 let testApplicant: Applicant
 
 describe('POST|GET /api/applicants', () => {
+  test('Fetch all applicants (empty array)', async () => {
+    await request(app)
+      .get('/api/applicants')
+      .then((response) => {
+        expect(response.statusCode).toBe(200)
+        const applicants = <Applicant[]>response.body
+        expect(applicants).toEqual([])
+      })
+  })
+
   test('Add new applicant', async () => {
     const createApplicant: Prisma.ApplicantCreateInput = {
       firstName: 'Lois Patrice',
@@ -72,14 +82,6 @@ describe('GET|PUT|DELETE /api/applicants/{id}', () => {
       })
   })
 
-  test('Applicant not found', async () => {
-    await request(app)
-      .get('/api/applicants/0')
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
   test('Update applicant by ID', async () => {
     const updateApplicant: Prisma.ApplicantUpdateInput = {
       firstName: 'Lois Patrice',
@@ -107,13 +109,13 @@ describe('GET|PUT|DELETE /api/applicants/{id}', () => {
         expect(applicant.sex).toBe('Female')
         expect(applicant.religion).toBe('Judaism')
         expect(applicant.address).toBe('31 Spooner Street, Quahog, Rhode Island')
-        expect(applicant.id).toBe(id)
-        expect(applicant.createdAt).toBeDefined()
-        expect(applicant.updatedAt).toBeDefined()
-        expect(applicant.nameExtension).toBeNull()
-        expect(applicant.telephoneNo).toBeNull()
-        expect(applicant.mobileNo).toBeNull()
-        expect(applicant.email).toBeNull()
+        expect(applicant.id).toBe(testApplicant.id)
+        expect(applicant.createdAt).toBe(testApplicant.createdAt)
+        expect(applicant.updatedAt).not.toBe(testApplicant.updatedAt)
+        expect(applicant.nameExtension).toBe(testApplicant.nameExtension)
+        expect(applicant.telephoneNo).toBe(testApplicant.telephoneNo)
+        expect(applicant.mobileNo).toBe(testApplicant.mobileNo)
+        expect(applicant.email).toBe(testApplicant.email)
       })
   })
 
@@ -122,6 +124,14 @@ describe('GET|PUT|DELETE /api/applicants/{id}', () => {
       .delete(`/api/applicants/${id}`)
       .then((response) => {
         expect(response.statusCode).toBe(204)
+      })
+  })
+
+  test('Applicant not found', async () => {
+    await request(app)
+      .get(`/api/applicants/${id}`)
+      .then((response) => {
+        expect(response.statusCode).toBe(404)
       })
   })
 })
