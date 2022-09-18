@@ -49,128 +49,127 @@ describe('POST /api/applicants', () => {
         applicantId = applicant.id
       })
   })
-})
 
-describe('POST|GET /api/applicants/{applicantId}/siblings', () => {
-  test('Add applicant\'s sibling', async () => {
-    const createApplicantSibling: Prisma.ApplicantSiblingUncheckedCreateInput = {
-      applicantId: applicantId,
-      firstName: 'Karen',
-      lastName: 'Griffin',
-      relationship: 'Sister'
-    }
-    await request(app)
-      .post(`/api/applicants/${applicantId}/siblings`)
-      .send(createApplicantSibling)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantSibling = <ApplicantSibling>response.body
-        expect(applicantSibling.applicantId).toBe(applicantId)
-        expect(applicantSibling.firstName).toBe('Karen')
-        expect(applicantSibling.lastName).toBe('Griffin')
-        expect(applicantSibling.relationship).toBe('Sister')
-        expect(applicantSibling.id).toBeDefined()
-        expect(applicantSibling.createdAt).toBeDefined()
-        expect(applicantSibling.updatedAt).toBeDefined()
-        expect(applicantSibling.middleName).toBeNull()
-        expect(applicantSibling.nameExtension).toBeNull()
-        expect(applicantSibling.occupation).toBeNull()
-        siblingId = applicantSibling.id
-        testApplicantSibling = applicantSibling
-      })
-  })
-
-  test('Fetch all applicant\'s siblings', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/siblings`)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantSiblings = <ApplicantSibling[]>response.body
-        expect(applicantSiblings).toEqual(expect.arrayContaining([testApplicantSibling]))
-      })
-  })
-})
-
-describe('GET|PUT|DELETE /api/applicants/{applicantId}/siblings/{siblingId}', () => {
-  test('Find applicant\'s sibling by ID', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/siblings/${siblingId}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantSibling = <ApplicantSibling>response.body
-        expect(applicantSibling).toEqual(testApplicantSibling)
-      })
-  })
-
-  test('Update applicant\'s sibling by ID', async () => {
-    const createApplicantSibling: Prisma.ApplicantSiblingUncheckedCreateInput = {
-      applicantId: applicantId,
-      firstName: 'Karen',
-      lastName: 'Griffin',
-      relationship: 'Sister',
-      occupation: 'Pro wrestler'
-    }
-    await request(app)
-      .put(`/api/applicants/${applicantId}/siblings/${siblingId}`)
-      .send(createApplicantSibling)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantSibling = <ApplicantSibling>response.body
-        expect(applicantSibling.applicantId).toBe(applicantId)
-        expect(applicantSibling.firstName).toBe('Karen')
-        expect(applicantSibling.lastName).toBe('Griffin')
-        expect(applicantSibling.relationship).toBe('Sister')
-        expect(applicantSibling.occupation).toBe('Pro wrestler')
-        expect(applicantSibling.id).toBe(testApplicantSibling.id)
-        expect(applicantSibling.createdAt).toBe(testApplicantSibling.createdAt)
-        expect(applicantSibling.updatedAt).not.toBe(testApplicantSibling.updatedAt)
-        expect(applicantSibling.middleName).toBe(testApplicantSibling.middleName)
-        expect(applicantSibling.nameExtension).toBe(testApplicantSibling.nameExtension)
-      })
-  })
-
-  test('Delete applicant\'s sibling by ID', async () => {
-    await request(app)
-      .delete(`/api/applicants/${applicantId}/siblings/${siblingId}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(204)
-      })
-  })
-
-  test('Applicant\'s sibling not found', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/siblings/${siblingId}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
-  test('Fetch all applicant\'s siblings (empty array)', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/siblings`)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantParents = <ApplicantSibling[]>response.body
-        expect(applicantParents).toEqual([])
-      })
-  })
-
-  describe('DELETE /api/applicants{id}', () => {
-    test('Delete applicant by ID', async () => {
+  describe('POST|GET /api/applicants/{applicantId}/siblings', () => {
+    test('Add applicant\'s sibling', async () => {
+      const createApplicantSibling: Prisma.ApplicantSiblingUncheckedCreateInput = {
+        applicantId: applicantId,
+        firstName: 'Karen',
+        lastName: 'Griffin',
+        relationship: 'Sister'
+      }
       await request(app)
-        .delete(`/api/applicants/${applicantId}`)
+        .post(`/api/applicants/${applicantId}/siblings`)
+        .send(createApplicantSibling)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantSibling = <ApplicantSibling>response.body
+          expect(applicantSibling.applicantId).toBe(applicantId)
+          expect(applicantSibling.firstName).toBe('Karen')
+          expect(applicantSibling.lastName).toBe('Griffin')
+          expect(applicantSibling.relationship).toBe('Sister')
+          expect(applicantSibling.id).toBeDefined()
+          expect(applicantSibling.createdAt).toBeDefined()
+          expect(applicantSibling.updatedAt).toBeDefined()
+          expect(applicantSibling.middleName).toBeNull()
+          expect(applicantSibling.nameExtension).toBeNull()
+          expect(applicantSibling.occupation).toBeNull()
+          siblingId = applicantSibling.id
+          testApplicantSibling = applicantSibling
+        })
+    })
+
+    test('Fetch all applicant\'s siblings', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/siblings`)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantSiblings = <ApplicantSibling[]>response.body
+          expect(applicantSiblings).toEqual(expect.arrayContaining([testApplicantSibling]))
+        })
+    })
+  })
+
+  describe('GET|PUT|DELETE /api/applicants/{applicantId}/siblings/{siblingId}', () => {
+    test('Find applicant\'s sibling by ID', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/siblings/${siblingId}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantSibling = <ApplicantSibling>response.body
+          expect(applicantSibling).toEqual(testApplicantSibling)
+        })
+    })
+
+    test('Update applicant\'s sibling by ID', async () => {
+      const updateApplicantSibling: Prisma.ApplicantSiblingUpdateInput = {
+        firstName: 'Karen',
+        lastName: 'Griffin',
+        relationship: 'Sister',
+        occupation: 'Pro wrestler'
+      }
+      await request(app)
+        .put(`/api/applicants/${applicantId}/siblings/${siblingId}`)
+        .send(updateApplicantSibling)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantSibling = <ApplicantSibling>response.body
+          expect(applicantSibling.applicantId).toBe(testApplicantSibling.applicantId)
+          expect(applicantSibling.firstName).toBe('Karen')
+          expect(applicantSibling.lastName).toBe('Griffin')
+          expect(applicantSibling.relationship).toBe('Sister')
+          expect(applicantSibling.occupation).toBe('Pro wrestler')
+          expect(applicantSibling.id).toBe(testApplicantSibling.id)
+          expect(applicantSibling.createdAt).toBe(testApplicantSibling.createdAt)
+          expect(applicantSibling.updatedAt).not.toBe(testApplicantSibling.updatedAt)
+          expect(applicantSibling.middleName).toBe(testApplicantSibling.middleName)
+          expect(applicantSibling.nameExtension).toBe(testApplicantSibling.nameExtension)
+        })
+    })
+
+    test('Delete applicant\'s sibling by ID', async () => {
+      await request(app)
+        .delete(`/api/applicants/${applicantId}/siblings/${siblingId}`)
         .then((response) => {
           expect(response.statusCode).toBe(204)
         })
     })
 
-    describe('GET /api/applicants/{applicantId}/siblings', () => {
-      test('Applicant not found', async () => {
+    test('Applicant\'s sibling not found', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/siblings/${siblingId}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(404)
+        })
+    })
+
+    test('Fetch all applicant\'s siblings (empty array)', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/siblings`)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantParents = <ApplicantSibling[]>response.body
+          expect(applicantParents).toEqual([])
+        })
+    })
+
+    describe('DELETE /api/applicants{id}', () => {
+      test('Delete applicant by ID', async () => {
         await request(app)
-          .get(`/api/applicants/${applicantId}/siblings`)
+          .delete(`/api/applicants/${applicantId}`)
           .then((response) => {
-            expect(response.statusCode).toBe(404)
+            expect(response.statusCode).toBe(204)
           })
+      })
+
+      describe('GET /api/applicants/{applicantId}/siblings', () => {
+        test('Applicant not found', async () => {
+          await request(app)
+            .get(`/api/applicants/${applicantId}/siblings`)
+            .then((response) => {
+              expect(response.statusCode).toBe(404)
+            })
+        })
       })
     })
   })

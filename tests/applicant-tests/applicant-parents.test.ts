@@ -51,178 +51,177 @@ describe('POST /api/applicants', () => {
         applicantId = applicant.id
       })
   })
-})
 
-describe('POST|GET /api/applicants/{applicantId}/parents', () => {
-  test('Add applicant\'s parent', async () => {
-    const createApplicantParent: Prisma.ApplicantParentUncheckedCreateInput = {
-      applicantId: applicantId,
-      firstName: 'Thelma',
-      lastName: 'Griffin',
-      relationship: 'Mother'
-    }
-    await request(app)
-      .post(`/api/applicants/${applicantId}/parents`)
-      .send(createApplicantParent)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantParent = <ApplicantParent>response.body
-        expect(applicantParent.applicantId).toBe(applicantId)
-        expect(applicantParent.firstName).toBe('Thelma')
-        expect(applicantParent.lastName).toBe('Griffin')
-        expect(applicantParent.relationship).toBe('Mother')
-        expect(applicantParent.id).toBeDefined()
-        expect(applicantParent.createdAt).toBeDefined()
-        expect(applicantParent.updatedAt).toBeDefined()
-        expect(applicantParent.middleName).toBeNull()
-        expect(applicantParent.nameExtension).toBeNull()
-        expect(applicantParent.occupation).toBeNull()
-        parentId1 = applicantParent.id
-        testApplicantParent1 = applicantParent
-      })
-  })
-
-  test('Parent not created (due to limit)', async () => {
-    const createApplicantParent: Prisma.ApplicantParentUncheckedCreateInput = {
-      applicantId: applicantId,
-      firstName: 'Francis',
-      lastName: 'Griffin',
-      relationship: 'Father'
-    }
-    await request(app)
-      .post(`/api/applicants/${applicantId}/parents`)
-      .send(createApplicantParent)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantParent = <ApplicantParent>response.body
-        expect(applicantParent.applicantId).toBe(applicantId)
-        expect(applicantParent.firstName).toBe('Francis')
-        expect(applicantParent.lastName).toBe('Griffin')
-        expect(applicantParent.relationship).toBe('Father')
-        expect(applicantParent.id).toBeDefined()
-        expect(applicantParent.createdAt).toBeDefined()
-        expect(applicantParent.updatedAt).toBeDefined()
-        expect(applicantParent.middleName).toBeNull()
-        expect(applicantParent.nameExtension).toBeNull()
-        expect(applicantParent.occupation).toBeNull()
-        parentId2 = applicantParent.id
-        testApplicantParent2 = applicantParent
-      })
-    await request(app)
-      .post(`/api/applicants/${applicantId}/parents`)
-      .send(createApplicantParent)
-      .then((response) => {
-        expect(response.statusCode).toBe(422)
-      })
-  })
-
-  test('Fetch all applicant\'s parents', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/parents`)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantParents = <ApplicantParent[]>response.body
-        expect(applicantParents).toEqual(expect.arrayContaining([testApplicantParent1, testApplicantParent2]))
-      })
-  })
-})
-
-describe('GET|PUT|DELETE /api/applicants/{applicantId}/parents/{parentId}', () => {
-  test('Find applicant\'s parent by ID', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/parents/${parentId1}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantParent = <ApplicantParent>response.body
-        expect(applicantParent).toEqual(testApplicantParent1)
-      })
-  })
-
-  test('Update applicant\'s parent by ID', async () => {
-    const createApplicantParent: Prisma.ApplicantParentUncheckedCreateInput = {
-      applicantId: applicantId,
-      firstName: 'Thelma',
-      lastName: 'Griffin',
-      relationship: 'Mother',
-      occupation: 'Deceased'
-    }
-    await request(app)
-      .put(`/api/applicants/${applicantId}/parents/${parentId1}`)
-      .send(createApplicantParent)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantParent = <ApplicantParent>response.body
-        expect(applicantParent.applicantId).toBe(applicantId)
-        expect(applicantParent.firstName).toBe('Thelma')
-        expect(applicantParent.lastName).toBe('Griffin')
-        expect(applicantParent.relationship).toBe('Mother')
-        expect(applicantParent.occupation).toBe('Deceased')
-        expect(applicantParent.id).toBe(testApplicantParent1.id)
-        expect(applicantParent.createdAt).toBe(testApplicantParent1.createdAt)
-        expect(applicantParent.updatedAt).not.toBe(testApplicantParent1.updatedAt)
-        expect(applicantParent.middleName).toBe(testApplicantParent1.middleName)
-        expect(applicantParent.nameExtension).toBe(testApplicantParent1.nameExtension)
-      })
-  })
-
-  test('Delete applicant\'s parent 1 by ID', async () => {
-    await request(app)
-      .delete(`/api/applicants/${applicantId}/parents/${parentId1}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(204)
-      })
-  })
-
-  test('Applicant\'s parent 1 not found', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/parents/${parentId1}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
-  test('Delete applicant\'s parent 2 by ID', async () => {
-    await request(app)
-      .delete(`/api/applicants/${applicantId}/parents/${parentId2}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(204)
-      })
-  })
-
-  test('Applicant\'s parent 2 not found', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/parents/${parentId2}`)
-      .then((response) => {
-        expect(response.statusCode).toBe(404)
-      })
-  })
-
-  test('Fetch all applicant\'s parents (empty array)', async () => {
-    await request(app)
-      .get(`/api/applicants/${applicantId}/parents`)
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicantParents = <ApplicantParent[]>response.body
-        expect(applicantParents).toEqual([])
-      })
-  })
-
-  describe('DELETE /api/applicants{id}', () => {
-    test('Delete applicant by ID', async () => {
+  describe('POST|GET /api/applicants/{applicantId}/parents', () => {
+    test('Add applicant\'s parent', async () => {
+      const createApplicantParent: Prisma.ApplicantParentUncheckedCreateInput = {
+        applicantId: applicantId,
+        firstName: 'Thelma',
+        lastName: 'Griffin',
+        relationship: 'Mother'
+      }
       await request(app)
-        .delete(`/api/applicants/${applicantId}`)
+        .post(`/api/applicants/${applicantId}/parents`)
+        .send(createApplicantParent)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantParent = <ApplicantParent>response.body
+          expect(applicantParent.applicantId).toBe(applicantId)
+          expect(applicantParent.firstName).toBe('Thelma')
+          expect(applicantParent.lastName).toBe('Griffin')
+          expect(applicantParent.relationship).toBe('Mother')
+          expect(applicantParent.id).toBeDefined()
+          expect(applicantParent.createdAt).toBeDefined()
+          expect(applicantParent.updatedAt).toBeDefined()
+          expect(applicantParent.middleName).toBeNull()
+          expect(applicantParent.nameExtension).toBeNull()
+          expect(applicantParent.occupation).toBeNull()
+          parentId1 = applicantParent.id
+          testApplicantParent1 = applicantParent
+        })
+    })
+
+    test('Parent not created (due to limit)', async () => {
+      const createApplicantParent: Prisma.ApplicantParentUncheckedCreateInput = {
+        applicantId: applicantId,
+        firstName: 'Francis',
+        lastName: 'Griffin',
+        relationship: 'Father'
+      }
+      await request(app)
+        .post(`/api/applicants/${applicantId}/parents`)
+        .send(createApplicantParent)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantParent = <ApplicantParent>response.body
+          expect(applicantParent.applicantId).toBe(applicantId)
+          expect(applicantParent.firstName).toBe('Francis')
+          expect(applicantParent.lastName).toBe('Griffin')
+          expect(applicantParent.relationship).toBe('Father')
+          expect(applicantParent.id).toBeDefined()
+          expect(applicantParent.createdAt).toBeDefined()
+          expect(applicantParent.updatedAt).toBeDefined()
+          expect(applicantParent.middleName).toBeNull()
+          expect(applicantParent.nameExtension).toBeNull()
+          expect(applicantParent.occupation).toBeNull()
+          parentId2 = applicantParent.id
+          testApplicantParent2 = applicantParent
+        })
+      await request(app)
+        .post(`/api/applicants/${applicantId}/parents`)
+        .send(createApplicantParent)
+        .then((response) => {
+          expect(response.statusCode).toBe(422)
+        })
+    })
+
+    test('Fetch all applicant\'s parents', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/parents`)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantParents = <ApplicantParent[]>response.body
+          expect(applicantParents).toEqual(expect.arrayContaining([testApplicantParent1, testApplicantParent2]))
+        })
+    })
+  })
+
+  describe('GET|PUT|DELETE /api/applicants/{applicantId}/parents/{parentId}', () => {
+    test('Find applicant\'s parent by ID', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/parents/${parentId1}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantParent = <ApplicantParent>response.body
+          expect(applicantParent).toEqual(testApplicantParent1)
+        })
+    })
+
+    test('Update applicant\'s parent by ID', async () => {
+      const updateApplicantParent: Prisma.ApplicantParentUpdateInput = {
+        firstName: 'Thelma',
+        lastName: 'Griffin',
+        relationship: 'Mother',
+        occupation: 'Deceased'
+      }
+      await request(app)
+        .put(`/api/applicants/${applicantId}/parents/${parentId1}`)
+        .send(updateApplicantParent)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantParent = <ApplicantParent>response.body
+          expect(applicantParent.applicantId).toBe(testApplicantParent1.applicantId)
+          expect(applicantParent.firstName).toBe('Thelma')
+          expect(applicantParent.lastName).toBe('Griffin')
+          expect(applicantParent.relationship).toBe('Mother')
+          expect(applicantParent.occupation).toBe('Deceased')
+          expect(applicantParent.id).toBe(testApplicantParent1.id)
+          expect(applicantParent.createdAt).toBe(testApplicantParent1.createdAt)
+          expect(applicantParent.updatedAt).not.toBe(testApplicantParent1.updatedAt)
+          expect(applicantParent.middleName).toBe(testApplicantParent1.middleName)
+          expect(applicantParent.nameExtension).toBe(testApplicantParent1.nameExtension)
+        })
+    })
+
+    test('Delete applicant\'s parent 1 by ID', async () => {
+      await request(app)
+        .delete(`/api/applicants/${applicantId}/parents/${parentId1}`)
         .then((response) => {
           expect(response.statusCode).toBe(204)
         })
     })
 
-    describe('GET /api/applicants/{applicantId}/parents', () => {
-      test('Applicant not found', async () => {
+    test('Applicant\'s parent 1 not found', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/parents/${parentId1}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(404)
+        })
+    })
+
+    test('Delete applicant\'s parent 2 by ID', async () => {
+      await request(app)
+        .delete(`/api/applicants/${applicantId}/parents/${parentId2}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(204)
+        })
+    })
+
+    test('Applicant\'s parent 2 not found', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/parents/${parentId2}`)
+        .then((response) => {
+          expect(response.statusCode).toBe(404)
+        })
+    })
+
+    test('Fetch all applicant\'s parents (empty array)', async () => {
+      await request(app)
+        .get(`/api/applicants/${applicantId}/parents`)
+        .then((response) => {
+          expect(response.statusCode).toBe(200)
+          const applicantParents = <ApplicantParent[]>response.body
+          expect(applicantParents).toEqual([])
+        })
+    })
+
+    describe('DELETE /api/applicants{id}', () => {
+      test('Delete applicant by ID', async () => {
         await request(app)
-          .get(`/api/applicants/${applicantId}/parents`)
+          .delete(`/api/applicants/${applicantId}`)
           .then((response) => {
-            expect(response.statusCode).toBe(404)
+            expect(response.statusCode).toBe(204)
           })
+      })
+
+      describe('GET /api/applicants/{applicantId}/parents', () => {
+        test('Applicant not found', async () => {
+          await request(app)
+            .get(`/api/applicants/${applicantId}/parents`)
+            .then((response) => {
+              expect(response.statusCode).toBe(404)
+            })
+        })
       })
     })
   })
