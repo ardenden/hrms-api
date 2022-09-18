@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: Applicant Education
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantEducation:
+      type: object
+      required:
+        - level
+        - school
+        - address
+        - yearFrom
+        - yearTo
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        level:
+          type: string
+          example: College
+        school:
+          type: string
+          example: Quahog College
+        address:
+          type: string
+          example: Quahog, Rhode Island
+        yearFrom:
+          type: string
+          example: 2014
+        yearTo:
+          type: string
+          example: 2014
+        course:
+          type: string
+          example: null
+        awards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicantEducationAward'
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+    ApplicantEducationAward:
+      $ref: 'applicant-education-award.yaml'
+paths:
+  /applicants/{applicantId}/educations:
+    get:
+      tags:
+        - Applicant Educations
+      summary: Fetch all applicant's educations
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantEducation'
+        404:
+          description: Not found
+    post:
+      tags:
+        - Applicant Educations
+      summary: Add applicant's education
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantEducation'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantEducation'
+        404:
+          description: Not found
+  /applicants/{applicantId}/educations/{educationId}:
+    get:
+      tags:
+        - Applicant Educations
+      summary: Find applicant's education by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantEducation'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Educations
+      summary: Update applicant's education by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantEducation'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantEducation'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Educations
+      summary: Delete applicant's education by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found

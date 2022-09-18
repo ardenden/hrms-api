@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: Applicant Education Award
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantEducationAward:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantEducationId:
+          type: integer
+          readOnly: true
+          description: applicant education id
+          example: 1
+        name:
+          type: string
+          example: 3 Acts of God
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/educations/{educationId}/awards:
+    get:
+      tags:
+        - Applicant Education Awards
+      summary: Fetch all applicant's education awards
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantEducationAward'
+        404:
+          description: Not found
+    post:
+      tags:
+        - Applicant Education Awards
+      summary: Add applicant's education award
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantEducationAward'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantEducationAward'
+        404:
+          description: Not found
+  /applicants/{applicantId}/educations/{educationId}/awards/{awardId}:
+    get:
+      tags:
+        - Applicant Education Awards
+      summary: Find applicant's education by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: awardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantEducationAward'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Education Awards
+      summary: Update applicant's education award by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: awardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantEducationAward'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantEducationAward'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Education Awards
+      summary: Delete applicant's education award by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: educationId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: awardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
