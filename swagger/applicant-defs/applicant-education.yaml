@@ -62,7 +62,7 @@ paths:
     get:
       tags:
         - Applicant Educations
-      summary: Fetch all applicant's educations
+      summary: Fetch all applicant's educations with awards
       parameters:
         - name: applicantId
           in: path
@@ -83,7 +83,7 @@ paths:
     post:
       tags:
         - Applicant Educations
-      summary: Add applicant's education
+      summary: Add applicant's education with awards
       parameters:
         - name: applicantId
           in: path
@@ -109,7 +109,7 @@ paths:
     get:
       tags:
         - Applicant Educations
-      summary: Find applicant's education by ID
+      summary: Find applicant's education with awards by ID
       parameters:
         - name: applicantId
           in: path
@@ -133,7 +133,7 @@ paths:
     put:
       tags:
         - Applicant Educations
-      summary: Update applicant's education by ID
+      summary: Update applicant's education and awards by ID
       parameters:
         - name: applicantId
           in: path
