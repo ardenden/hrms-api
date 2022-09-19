@@ -130,7 +130,7 @@ describe('POST /api/applicants', () => {
         })
     })
 
-    describe('DELETE /api/applicants{id}', () => {
+    describe('DELETE /api/applicants/{id}', () => {
       test('Delete applicant by ID', async () => {
         await request(app)
           .delete(`/api/applicants/${applicantId}`)

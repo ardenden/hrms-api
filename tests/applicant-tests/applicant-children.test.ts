@@ -144,17 +144,19 @@ describe('POST /api/applicants', () => {
         })
     })
 
-    test('Fetch all applicant\'s child (empty array)', async () => {
-      await request(app)
-        .get(`/api/applicants/${applicantId}/children`)
-        .then((response) => {
-          expect(response.statusCode).toBe(200)
-          const applicantParents = <ApplicantChild[]>response.body
-          expect(applicantParents).toEqual([])
-        })
+    describe('GET /api/applicants/{id}/children', () => {
+      test('Fetch all applicant\'s child (empty array)', async () => {
+        await request(app)
+          .get(`/api/applicants/${applicantId}/children`)
+          .then((response) => {
+            expect(response.statusCode).toBe(200)
+            const applicantParents = <ApplicantChild[]>response.body
+            expect(applicantParents).toEqual([])
+          })
+      })
     })
 
-    describe('DELETE /api/applicants{id}', () => {
+    describe('DELETE /api/applicants/{id}', () => {
       test('Delete applicant by ID', async () => {
         await request(app)
           .delete(`/api/applicants/${applicantId}`)
