@@ -198,20 +198,6 @@ describe('POST /api/applicants', () => {
         })
     })
 
-    describe('GET /api/applicants/{id}/educations', () => {
-      test('Fetch all applicant\'s educations (empty array)', async () => {
-        await request(app)
-          .get(`/api/applicants/${applicantId}/educations`)
-          .then((response) => {
-            expect(response.statusCode).toBe(200)
-            const applicantEducations = <ApplicantEducation & {
-              awards: ApplicantEducationAward[]
-            }[]>response.body
-            expect(applicantEducations).toEqual([])
-          })
-      })
-    })
-
     describe('DELETE /api/applicants/{id}', () => {
       test('Delete applicant by ID', async () => {
         await request(app)

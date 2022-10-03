@@ -143,18 +143,6 @@ describe('POST /api/applicants', () => {
         })
     })
 
-    describe('GET /api/applicants/{id}/siblings', () => {
-      test('Fetch all applicant\'s siblings (empty array)', async () => {
-        await request(app)
-          .get(`/api/applicants/${applicantId}/siblings`)
-          .then((response) => {
-            expect(response.statusCode).toBe(200)
-            const applicantParents = <ApplicantSibling[]>response.body
-            expect(applicantParents).toEqual([])
-          })
-      })
-    })
-
     describe('DELETE /api/applicants/{id}', () => {
       test('Delete applicant by ID', async () => {
         await request(app)

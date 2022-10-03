@@ -186,34 +186,6 @@ describe('POST /api/applicants', () => {
           })
       })
 
-      test('Delete applicant\'s education 2 award by ID', async () => {
-        await request(app)
-          .delete(`/api/applicants/${applicantId}/educations/${educationId}/awards/${awardId2}`)
-          .then((response) => {
-            expect(response.statusCode).toBe(204)
-          })
-      })
-
-      test('Applicant\'s education award 2 not found', async () => {
-        await request(app)
-          .get(`/api/applicants/${applicantId}/educations/${educationId}/awards/${awardId2}`)
-          .then((response) => {
-            expect(response.statusCode).toBe(404)
-          })
-      })
-
-      describe('GET /api/applicants/{applicantId}/educations/{educationId}/awards', () => {
-        test('Fetch all applicant\'s education awards (empty array)', async () => {
-          await request(app)
-            .get(`/api/applicants/${applicantId}/educations/${educationId}/awards`)
-            .then((response) => {
-              expect(response.statusCode).toBe(200)
-              const applicantEducationAwards = <ApplicantEducationAward[]>response.body
-              expect(applicantEducationAwards).toEqual([])
-            })
-        })
-      })
-
       describe('DELETE /api/applicants/{id}', () => {
         test('Delete applicant by ID', async () => {
           await request(app)

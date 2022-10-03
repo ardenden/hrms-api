@@ -179,34 +179,6 @@ describe('POST /api/applicants', () => {
         })
     })
 
-    test('Delete applicant\'s parent 2 by ID', async () => {
-      await request(app)
-        .delete(`/api/applicants/${applicantId}/parents/${parentId2}`)
-        .then((response) => {
-          expect(response.statusCode).toBe(204)
-        })
-    })
-
-    test('Applicant\'s parent 2 not found', async () => {
-      await request(app)
-        .get(`/api/applicants/${applicantId}/parents/${parentId2}`)
-        .then((response) => {
-          expect(response.statusCode).toBe(404)
-        })
-    })
-
-    describe('GET /api/applicants/{id}/parents', () => {
-      test('Fetch all applicant\'s parents (empty array)', async () => {
-        await request(app)
-          .get(`/api/applicants/${applicantId}/parents`)
-          .then((response) => {
-            expect(response.statusCode).toBe(200)
-            const applicantParents = <ApplicantParent[]>response.body
-            expect(applicantParents).toEqual([])
-          })
-      })
-    })
-
     describe('DELETE /api/applicants/{id}', () => {
       test('Delete applicant by ID', async () => {
         await request(app)

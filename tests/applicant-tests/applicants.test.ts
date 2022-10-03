@@ -11,16 +11,6 @@ let id: number
 let testApplicant: Applicant
 
 describe('POST|GET /api/applicants', () => {
-  test('Fetch all applicants (empty array)', async () => {
-    await request(app)
-      .get('/api/applicants')
-      .then((response) => {
-        expect(response.statusCode).toBe(200)
-        const applicants = <Applicant[]>response.body
-        expect(applicants).toEqual([])
-      })
-  })
-
   test('Add new applicant', async () => {
     const createApplicant: Prisma.ApplicantCreateInput = {
       firstName: 'Lois Patrice',
