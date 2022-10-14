@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: Applicant Experience
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantExperience:
+      type: object
+      required:
+        - company
+        - address
+        - position
+        - salaryAmount
+        - salaryPeriod
+        - dateFrom
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        company:
+          type: string
+          example: Happy-Go-Lucky Toy Factory
+        address:
+          type: string
+          example: Quahog, Rhode Island
+        position:
+          type: string
+          example: Safety Inspector
+        salaryAmount:
+          type: number
+          example: 40000
+        salaryPeriod:
+          type: string
+          example: year
+        dateFrom:
+          type: string
+          format: date-time
+          example: 1999-01-01T00:00:00.000Z
+        dateTo:
+          type: string
+          format: date-time
+          example: 2002-01-01T00:00:00.000Z
+        isCurrent:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/experiences:
+    get:
+      tags:
+        - Applicant Experiences
+      summary: Fetch all applicant's experiences
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantExperience'
+        404:
+          description: Not found
+    post:
+      tags:
+        - Applicant Experiences
+      summary: Add applicant's experience
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantExperience'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantExperience'
+        404:
+          description: Not found
+  /applicants/{applicantId}/experiences/{experienceId}:
+    get:
+      tags:
+        - Applicant Experiences
+      summary: Find applicant's experience by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: experienceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantExperience'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Experiences
+      summary: Update applicant's experience by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: experienceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantExperience'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantExperience'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Experiences
+      summary: Delete applicant's experience by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: experienceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
