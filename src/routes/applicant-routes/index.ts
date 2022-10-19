@@ -7,6 +7,7 @@ import applicantSpouses from './applicant-spouses'
 import applicantEducations from './applicant-educations'
 import applicantEducationAwards from './applicant-education-awards'
 import applicantExperiences from './applicant-experiences'
+import applicantOrganizations from './applicant-organizations'
 
 const router = Router()
 router.use('/', applicants)
@@ -17,5 +18,6 @@ router.use('/:applicantId/spouse', applicantSpouses)
 router.use('/:applicantId/educations', applicantEducations)
 router.use('/:applicantId/educations/:educationId/awards', applicantEducationAwards)
 router.use('/:applicantId/experiences', applicantExperiences)
+router.use('/:applicantId/organizations', applicantOrganizations)
 
 export default router
