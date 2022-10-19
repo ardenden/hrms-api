@@ -11,28 +11,29 @@ datasource db {
 }
 
 model Applicant {
-  id            Int                   @id @default(autoincrement())
-  firstName     String                @map("first_name")
-  middleName    String?               @map("middle_name")
-  lastName      String                @map("last_name")
-  nameExtension String?               @map("name_extension")
-  telephoneNo   String?               @map("telephone_no")
-  mobileNo      String?               @map("mobile_no")
-  email         String?               @map("email")
-  birthDate     DateTime              @map("birth_date") @db.Date
-  birthPlace    String                @map("birth_place")
-  citizenship   String                @map("citizenship")
-  sex           String                @map("sex")
-  religion      String?               @map("religion")
-  address       String                @map("address")
-  createdAt     DateTime              @default(now()) @map("created_at")
-  updatedAt     DateTime              @updatedAt @map("updated_at")
+  id            Int                     @id @default(autoincrement())
+  firstName     String                  @map("first_name")
+  middleName    String?                 @map("middle_name")
+  lastName      String                  @map("last_name")
+  nameExtension String?                 @map("name_extension")
+  telephoneNo   String?                 @map("telephone_no")
+  mobileNo      String?                 @map("mobile_no")
+  email         String?                 @map("email")
+  birthDate     DateTime                @map("birth_date") @db.Date
+  birthPlace    String                  @map("birth_place")
+  citizenship   String                  @map("citizenship")
+  sex           String                  @map("sex")
+  religion      String?                 @map("religion")
+  address       String                  @map("address")
+  createdAt     DateTime                @default(now()) @map("created_at")
+  updatedAt     DateTime                @updatedAt @map("updated_at")
   parents       ApplicantParent[]
   siblings      ApplicantSibling[]
   children      ApplicantChild[]
   spouse        ApplicantSpouse?
   educations    ApplicantEducation[]
   experiences   ApplicantExperience[]
+  organizations ApplicantOrganization[]
 
   @@map("applicants")
 }
@@ -145,4 +146,18 @@ model ApplicantExperience {
   applicant    Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 
   @@map("applicant_experiences")
+}
+
+model ApplicantOrganization {
+  id          Int       @id @default(autoincrement())
+  applicantId Int       @map("applicant_id")
+  name        String    @map("name")
+  address     String    @map("address")
+  position    String    @map("position")
+  dateFrom    DateTime  @map("date_from") @db.Date
+  dateTo      DateTime? @map("date_to") @db.Date
+  isCurrent   Boolean   @default(false) @map("is_current")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  applicant   Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 }
