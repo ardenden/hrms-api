@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Applicant Organization
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantOrganization:
+      type: object
+      required:
+        - name
+        - address
+        - position
+        - dateFrom
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        name:
+          type: string
+          example: Peter Griffin's Friends
+        address:
+          type: string
+          example: The Drunken Clam, Quahog, Rhode Island
+        position:
+          type: string
+          example: Commander
+        dateFrom:
+          type: string
+          format: date-time
+          example: 1999-01-01T00:00:00.000Z
+        dateTo:
+          type: string
+          format: date-time
+          example: null
+        isCurrent:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/organizations:
+    get:
+      tags:
+        - Applicant Organizations
+      summary: Fetch all applicant's organizations
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantOrganization'
+        404:
+          description: Not found
+    post:
+      tags:
+        - Applicant Organizations
+      summary: Add applicant's organization
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantOrganization'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantOrganization'
+        404:
+          description: Not found
+  /applicants/{applicantId}/organizations/{organizationId}:
+    get:
+      tags:
+        - Applicant Organizations
+      summary: Find applicant's organization by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: organizationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantOrganization'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Organizations
+      summary: Update applicant's organization by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: organizationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantOrganization'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantOrganization'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Organizations
+      summary: Delete applicant's organization by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: organizationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
