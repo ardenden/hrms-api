@@ -160,4 +160,6 @@ model ApplicantOrganization {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
   applicant   Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+
+  @@map("applicant_organizations")
 }
