@@ -34,6 +34,7 @@ model Applicant {
   educations    ApplicantEducation[]
   experiences   ApplicantExperience[]
   organizations ApplicantOrganization[]
+  skills        ApplicantSkill[]
 
   @@map("applicants")
 }
@@ -162,4 +163,15 @@ model ApplicantOrganization {
   applicant   Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
 
   @@map("applicant_organizations")
+}
+
+model ApplicantSkill {
+  id          Int       @id @default(autoincrement())
+  applicantId Int       @map("applicant_id")
+  name        String    @map("name")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  applicant   Applicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+
+  @@map("applicant_skills")
 }
