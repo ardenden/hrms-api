@@ -1,0 +1,157 @@
+openapi: 3.0.3
+info:
+  title: Applicant Skill
+  version: 1.0.0
+components:
+  schemas:
+    ApplicantSkill:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: auto increment
+          example: 7
+        applicantId:
+          type: integer
+          readOnly: true
+          description: applicant id
+          example: 1
+        name:
+          type: string
+          example: Self-regeneration
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto create
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: auto update
+paths:
+  /applicants/{applicantId}/skills:
+    get:
+      tags:
+        - Applicant Skills
+      summary: Fetch all applicant's skills
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicantSkill'
+        404:
+          description: Not found
+    post:
+      tags:
+        - Applicant Skills
+      summary: Add applicant's skill
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantSkill'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSkill'
+        404:
+          description: Not found
+  /applicants/{applicantId}/skills/{skillId}:
+    get:
+      tags:
+        - Applicant Skills
+      summary: Find applicant's skill by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: skillId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSkill'
+        404:
+          description: Not found
+    put:
+      tags:
+        - Applicant Skills
+      summary: Update applicant's skill by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: skillId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicantSkill'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicantSkill'
+        404:
+          description: Not found
+    delete:
+      tags:
+        - Applicant Skills
+      summary: Delete applicant's skill by ID
+      parameters:
+        - name: applicantId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: skillId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found
