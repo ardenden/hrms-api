@@ -5,17 +5,16 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 env:
   NODE_ENV: development
-  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/hrms"
+  DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/hrms'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,22 +23,22 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - name: Setup PostgreSQL
-      uses: Harmon758/postgresql-action@v1.0.0
-      with:
-        postgresql version: '14.5'
-        postgresql db: hrms
-        postgresql user: postgres
-        postgresql password: postgres
-    
-    - run: npm ci
-    - run: npx prisma db push
-    - run: npm run build --if-present
-    - run: npm test
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Setup PostgreSQL
+        uses: Harmon758/postgresql-action@v1.0.0
+        with:
+          postgresql version: '15.0'
+          postgresql db: hrms
+          postgresql user: postgres
+          postgresql password: postgres
+
+      - run: npm ci
+      - run: npx prisma db push
+      - run: npm run build --if-present
+      - run: npm test
